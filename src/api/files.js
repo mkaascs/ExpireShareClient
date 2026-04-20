@@ -1,0 +1,64 @@
+const BASE = import.meta.env.VITE_API_URL ?? ''
+
+export async function downloadFile(alias, password = '') {
+    const headers = {}
+    if (password) headers['X-Resource-Password'] = password
+
+    const res = await fetch(`${BASE}/download/${encodeURIComponent(alias)}`, {
+        method: 'GET',
+        headers,
+    })
+
+    const contentType = res.headers.get('Content-Type') || ''
+    const disposition = res.headers.get('Content-Disposition') || ''
+
+    if (contentType.includes('text/html')) {
+        return {
+            ok: false,
+            status: res.status || 500,
+            message: 'Invalid server response (HTML instead of file)'
+        }
+    }
+
+    if (res.ok) {
+        if (!disposition) {
+            return {
+                ok: false,
+                status: 500,
+                message: 'Missing Content-Disposition header'
+            }
+        }
+
+        const blob = await res.blob()
+
+        const match = disposition.match(/filename[^;=\n]*=["']?([^"';\n]+)["']?/)
+        const filename = match?.[1]?.trim() ?? alias
+
+        return { ok: true, blob, filename }
+    }
+
+    let message = 'Something went wrong.'
+
+    try {
+        const json = await res.json()
+        if (Array.isArray(json.errors) && json.errors.length > 0) {
+            message = json.errors[0]
+        }
+    } catch { /* empty */ }
+
+    return { ok: false, status: res.status, message }
+}
+
+export function triggerDownload(blob, filename) {
+    const url = URL.createObjectURL(blob)
+
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+
+    URL.revokeObjectURL(url)
+}
