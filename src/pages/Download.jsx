@@ -33,7 +33,14 @@ export default function Download() {
         setStatus(STATUS.LOADING)
         setMessage('')
 
-        const result = await downloadFile(alias, withPassword ? password : '')
+        let result
+        try {
+            result = await downloadFile(alias, withPassword ? password : '')
+        } catch {
+            setStatus(STATUS.ERROR)
+            setMessage('Network error. Check CORS or server availability.')
+            return
+        }
 
         if (result.ok) {
             triggerDownload(result.blob, result.filename)
