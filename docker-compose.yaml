@@ -1,0 +1,16 @@
+services:
+  frontend:
+    build:
+      context: ./
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    networks:
+      - shared_network
+
+networks:
+  shared_network:
+    external: true
+    name: services-network      

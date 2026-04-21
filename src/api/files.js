@@ -1,4 +1,4 @@
-const BASE = import.meta.env.VITE_API_URL ?? ''
+const BASE = '/api'
 
 export async function downloadFile(alias, password = '') {
     const headers = {}
