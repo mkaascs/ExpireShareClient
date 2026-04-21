@@ -44,41 +44,107 @@ html, body {
     align-items: center;
     justify-content: center;
 
-    padding: 40px 20px;
+    padding: 40px 20px 120px;
 }
 
 /* HEADER */
-.label {
-    font-size: 12px;
-    color: #888;
-    margin-bottom: 8px;
-}
-
-.heading {
-    font-size: 28px;
+.header {
+    text-align: center;
     margin-bottom: 24px;
 }
 
-.headingMuted {
-    color: #aaa;
+.title {
+    font-family: 'Caveat', cursive;
+    font-size: 42px;
+    font-weight: 400;
+    margin: 0 0 10px;
 }
 
-/* рукописный стиль */
-.script {
-    font-family: 'Caveat', cursive;
-    font-size: 1.3em;
+.aliasBadge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #efefed;
+    border-radius: 999px;
+    font-size: 12px;
+    color: #666;
+    font-family: 'SF Mono', 'Fira Mono', monospace;
+    letter-spacing: 0.03em;
 }
 
 /* CARD */
 .card {
     width: 100%;
-    max-width: 380px;
+    max-width: 400px;
 
     background: white;
     border: 1px solid #e5e5e5;
-    border-radius: 12px;
+    border-radius: 14px;
 
-    padding: 20px;
+    padding: 32px 28px;
+}
+
+/* STATES */
+.stateBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 8px 0;
+}
+
+.stateIcon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #f0faf4;
+    color: #2a9d5c;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.stateIconMuted {
+    background: #f4f4f4;
+    color: #aaa;
+}
+
+.stateIconError {
+    background: #fff2f2;
+    color: #d44;
+}
+
+.stateTitle {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.stateText {
+    font-size: 13px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.stateDesc {
+    font-size: 13px;
+    color: #888;
+    max-width: 260px;
+    line-height: 1.5;
+}
+
+.stateDescError {
+    color: #d44;
+}
+
+/* PASSWORD */
+.passwordHint {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 16px;
+    text-align: center;
 }
 
 /* INPUT */
@@ -118,94 +184,40 @@ html, body {
 
     background: #111;
     color: white;
+    font-size: 14px;
 
     cursor: pointer;
-    transition: 0.2s;
+    transition: opacity 0.2s;
 }
 
 .btn:hover:not(:disabled) {
     opacity: 0.85;
 }
 
-.btnLoading {
-    opacity: 0.6;
-}
-
-/* ERROR */
-.errorMsg {
-    font-size: 13px;
-    color: #d44;
-    margin-bottom: 10px;
-}
-
-.infoLabel {
-    color: #666;
-}
-
-.errorLabel {
-    color: #d44;
-}
-
-/* SUCCESS */
-.successBlock {
-    text-align: center;
-}
-
-.successIcon {
-    font-size: 28px;
-    margin-bottom: 8px;
-}
-
-.successTitle {
-    font-weight: 500;
-}
-
-.successFile {
-    font-size: 12px;
-    color: #777;
-}
-
-.resetBtn {
-    margin-top: 16px;
-
+.retryBtn {
+    margin-top: 8px;
     background: none;
     border: none;
-    color: #111;
-
+    color: #666;
+    font-size: 13px;
     cursor: pointer;
-    font-size: 13px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
-/* NOT FOUND */
-.notFoundBlock {
-    text-align: center;
-}
-
-.notFoundTitle {
-    font-size: 18px;
-}
-
-.notFoundDesc {
-    font-size: 13px;
-    color: #777;
-    margin-top: 6px;
-}
-
-/* LOADING */
-.loadingBlock {
-    display: flex;
-    justify-content: center;
-    padding: 8px 0;
+.retryBtn:hover {
+    color: #111;
 }
 
 /* SPINNER */
 .spinner {
-    width: 18px;
-    height: 18px;
-    border: 2px solid #ddd;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #e5e5e5;
     border-top: 2px solid #111;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
+    margin-bottom: 4px;
 }
 
 @keyframes spin {

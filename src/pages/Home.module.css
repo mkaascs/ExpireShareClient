@@ -44,17 +44,24 @@ html, body {
     color: #111;
 }
 
+/* CONTENT */
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+
 /* MAIN */
 .main {
     flex: 1;
 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 
-    text-align: center;
-    padding: 40px 20px;
+    text-align: left;
+    padding: 60px 80px 60px 100px;
 }
 
 .eyebrow {
@@ -91,7 +98,7 @@ html, body {
 .aliasForm {
     display: flex;
     gap: 8px;
-    max-width: 420px;
+    max-width: 380px;
     width: 100%;
 }
 
@@ -138,16 +145,21 @@ html, body {
     cursor: default;
 }
 
-/* FOOTER */
+/* SIDEBAR */
 .features {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    width: 40%;
+    flex-shrink: 0;
 
-    border-top: 1px solid #e5e5e5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border-left: 1px solid #e5e5e5;
 }
 
 .feature {
-    padding: 24px;
+    padding: 28px 40px;
+    max-width: 320px;
 }
 
 .featureNum {
@@ -168,13 +180,23 @@ html, body {
 }
 
 .featureDivider {
-    display: none;
+    display: block;
+    border: none;
+    border-top: 1px solid #e5e5e5;
+    margin: 0;
 }
 
 /* MOBILE */
-@media (max-width: 700px) {
+@media (max-width: 800px) {
+    .content {
+        flex-direction: column;
+    }
+
     .features {
-        grid-template-columns: 1fr;
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid #e5e5e5;
+        flex-direction: column;
     }
 
     .main {

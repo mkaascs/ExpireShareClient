@@ -71,8 +71,6 @@ export default function Download() {
         }
     }
 
-    const isLoading = status === STATUS.LOADING
-
     return (
         <div className={styles.root}>
             <nav className={styles.nav}>
@@ -80,29 +78,32 @@ export default function Download() {
             </nav>
 
             <main className={styles.main}>
-                <div className={styles.label}>Download file</div>
-                <h1 className={styles.heading}>
-                    <em className={styles.script}>{alias}</em>
-                </h1>
+                <div className={styles.header}>
+                    <h1 className={styles.title}>Download file</h1>
+                    <div className={styles.aliasBadge}>{alias}</div>
+                </div>
 
                 <div className={styles.card}>
                     {status === STATUS.LOADING && (
-                        <div className={styles.loadingBlock}>
+                        <div className={styles.stateBlock}>
                             <div className={styles.spinner} />
+                            <div className={styles.stateText}>Fetching file...</div>
                         </div>
                     )}
 
                     {status === STATUS.SUCCESS && (
-                        <div className={styles.successBlock}>
-                            <div className={styles.successIcon}>✓</div>
-                            <div className={styles.successTitle}>File downloaded successfully</div>
+                        <div className={styles.stateBlock}>
+                            <div className={styles.stateIcon}>✓</div>
+                            <div className={styles.stateTitle}>Download started</div>
+                            <div className={styles.stateDesc}>Your file is being saved.</div>
                         </div>
                     )}
 
                     {status === STATUS.NOT_FOUND && (
-                        <div className={styles.notFoundBlock}>
-                            <div className={styles.notFoundTitle}>File not found</div>
-                            <div className={styles.notFoundDesc}>
+                        <div className={styles.stateBlock}>
+                            <div className={`${styles.stateIcon} ${styles.stateIconMuted}`}>—</div>
+                            <div className={styles.stateTitle}>File not found</div>
+                            <div className={styles.stateDesc}>
                                 Expired, download limit reached, or invalid alias.
                             </div>
                         </div>
@@ -110,9 +111,9 @@ export default function Download() {
 
                     {status === STATUS.PASSWORD && (
                         <>
-                            {message && (
-                                <div className={styles.errorMsg}>{message}</div>
-                            )}
+                            <div className={styles.passwordHint}>
+                                {message}
+                            </div>
                             <div className={styles.fieldGroup}>
                                 <label className={styles.fieldLabel}>Password</label>
                                 <input
@@ -125,25 +126,21 @@ export default function Download() {
                                     placeholder="Enter file password"
                                 />
                             </div>
-                            <button
-                                className={styles.btn}
-                                onClick={() => attempt(true)}
-                            >
+                            <button className={styles.btn} onClick={() => attempt(true)}>
                                 Download
                             </button>
                         </>
                     )}
 
                     {status === STATUS.ERROR && (
-                        <>
-                            <div className={styles.errorMsg}>{message}</div>
-                            <button
-                                className={styles.btn}
-                                onClick={() => attempt(false)}
-                            >
+                        <div className={styles.stateBlock}>
+                            <div className={`${styles.stateIcon} ${styles.stateIconError}`}>!</div>
+                            <div className={styles.stateTitle}>Something went wrong</div>
+                            <div className={`${styles.stateDesc} ${styles.stateDescError}`}>{message}</div>
+                            <button className={styles.retryBtn} onClick={() => attempt(false)}>
                                 Try again
                             </button>
-                        </>
+                        </div>
                     )}
                 </div>
             </main>

@@ -18,62 +18,64 @@ export default function Home() {
                 <span className={styles.logoMark}>ES</span>
             </nav>
 
-            <main className={styles.main}>
-                <div className={styles.eyebrow}>File sharing, simplified</div>
+            <div className={styles.content}>
+                <main className={styles.main}>
+                    <div className={styles.eyebrow}>File sharing, simplified</div>
 
-                <h1 className={styles.headline}>
-                    Files that{' '}
-                    <em className={styles.script}>disappear</em>
-                    <br />when their work is done.
-                </h1>
+                    <h1 className={styles.headline}>
+                        Files that{' '}
+                        <em className={styles.script}>disappear</em>
+                        <br />when their work is done.
+                    </h1>
 
-                <p className={styles.body}>
-                    Upload a file with a time limit and download cap.
-                    Share the link. It's gone when it's supposed to be.
-                </p>
+                    <p className={styles.body}>
+                        Upload a file with a time limit and download cap.
+                        Share the link. It's gone when it's supposed to be.
+                    </p>
 
-                <form onSubmit={handleSubmit} className={styles.aliasForm}>
-                    <input
-                        className={styles.aliasInput}
-                        value={alias}
-                        onChange={e => setAlias(e.target.value)}
-                        placeholder="Enter file alias"
-                    />
-                    <button
-                        type="submit"
-                        className={styles.cta}
-                        disabled={!alias.trim()}
-                    >
-                        Download →
-                    </button>
-                </form>
-            </main>
+                    <form onSubmit={handleSubmit} className={styles.aliasForm}>
+                        <input
+                            className={styles.aliasInput}
+                            value={alias}
+                            onChange={e => setAlias(e.target.value)}
+                            placeholder="Enter file alias"
+                        />
+                        <button
+                            type="submit"
+                            className={styles.cta}
+                            disabled={!alias.trim()}
+                        >
+                            Download →
+                        </button>
+                    </form>
+                </main>
 
-            <footer className={styles.features}>
-                <div className={styles.feature}>
-                    <div className={styles.featureNum}>I</div>
-                    <div className={styles.featureTitle}>Download limit</div>
-                    <div className={styles.featureDesc}>
-                        Set a maximum number of downloads. The file removes itself after the last one.
+                <aside className={styles.features}>
+                    <div className={styles.feature}>
+                        <div className={styles.featureNum}>I</div>
+                        <div className={styles.featureTitle}>Download limit</div>
+                        <div className={styles.featureDesc}>
+                            Set a maximum number of downloads. The file removes itself after the last one.
+                        </div>
                     </div>
-                </div>
-                <div className={styles.featureDivider} />
-                <div className={styles.feature}>
-                    <div className={styles.featureNum}>II</div>
-                    <div className={styles.featureTitle}>TTL expiration</div>
-                    <div className={styles.featureDesc}>
-                        Files expire automatically. 1h, 24h, 7 days — your choice.
+                    <div className={styles.featureDivider} />
+                    <div className={styles.feature}>
+                        <div className={styles.featureNum}>II</div>
+                        <div className={styles.featureTitle}>TTL expiration</div>
+                        <div className={styles.featureDesc}>
+                            Files expire automatically. 1h, 24h, 7 days — your choice.
+                        </div>
                     </div>
-                </div>
-                <div className={styles.featureDivider} />
-                <div className={styles.feature}>
-                    <div className={styles.featureNum}>III</div>
-                    <div className={styles.featureTitle}>Password lock</div>
-                    <div className={styles.featureDesc}>
-                        Protect a file with a password. Only those who know it can open it.
+                    <div className={styles.featureDivider} />
+                    <div className={styles.feature}>
+                        <div className={styles.featureNum}>III</div>
+                        <div className={styles.featureTitle}>Password lock</div>
+                        <div className={styles.featureDesc}>
+                            Protect a file with a password. Only those who know it can open it.
+                        </div>
                     </div>
-                </div>
-            </footer>
+                </aside>
+            </div>
         </div>
     )
 }
