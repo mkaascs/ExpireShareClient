@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import * as authApi from '../api/auth'
 import styles from './Auth.module.css'
 
 export default function Register() {
@@ -16,14 +17,7 @@ export default function Register() {
         setError('')
         setLoading(true)
 
-        // Запрос идёт через /api/auth/register → прокси → бэкенд
-        const res = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(form),
-        })
-
-        const data = await res.json().catch(() => ({}))
+        const res = await authApi.register(form.login, form.email, form.password)
         setLoading(false)
 
         if (res.ok) {
@@ -33,8 +27,8 @@ export default function Register() {
 
         if (res.status === 409) {
             setError('Login or email already taken.')
-        } else if (data?.errors?.length) {
-            setError(data.errors[0])
+        } else if (res.status === 422 || res.data?.errors?.length) {
+            setError(res.data.errors[0])
         } else {
             setError('Something went wrong. Try again.')
         }

@@ -29,7 +29,7 @@ export default function Login() {
 
         if (res.status === 401) {
             setError('Invalid login or password.')
-        } else if (res.data?.errors?.length) {
+        } else if (res.status === 422 || res.data?.errors?.length) {
             setError(res.data.errors[0])
         } else {
             setError('Something went wrong. Try again.')

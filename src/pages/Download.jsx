@@ -18,8 +18,11 @@ export default function Download() {
     const [message, setMessage] = useState('')
 
     const passwordRef = useRef(null)
+    const attemptedAliasRef = useRef(null)
 
     useEffect(() => {
+        if (attemptedAliasRef.current === alias) return
+        attemptedAliasRef.current = alias
         attempt(false)
     }, [alias])
 
@@ -38,7 +41,7 @@ export default function Download() {
             result = await downloadFile(alias, withPassword ? password : '')
         } catch {
             setStatus(STATUS.ERROR)
-            setMessage('Network error. Check CORS or server availability.')
+            setMessage('Network error. Check server availability.')
             return
         }
 
