@@ -8,7 +8,7 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       '/api': {
-        target: 'http://expire-share:8080',
+        target: import.meta.env.VITE_API_URL,
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, ''),
       },

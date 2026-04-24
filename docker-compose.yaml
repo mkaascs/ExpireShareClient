@@ -2,6 +2,8 @@ services:
   frontend:
     build:
       context: ./
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
     volumes:
       - ./:/app
       - /app/node_modules
