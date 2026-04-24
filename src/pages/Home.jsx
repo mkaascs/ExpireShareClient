@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import styles from './Home.module.css'
 
 export default function Home() {
     const [alias, setAlias] = useState('')
     const navigate = useNavigate()
+    const { isAuth, logout } = useAuth()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -16,6 +18,16 @@ export default function Home() {
         <div className={styles.root}>
             <nav className={styles.nav}>
                 <span className={styles.logoMark}>ES</span>
+                <div className={styles.navActions}>
+                    {isAuth ? (
+                        <button className={styles.navBtn} onClick={logout}>Sign out</button>
+                    ) : (
+                        <>
+                            <Link to="/login" className={styles.navLink}>Sign in</Link>
+                            <Link to="/register" className={styles.navBtn}>Register</Link>
+                        </>
+                    )}
+                </div>
             </nav>
 
             <div className={styles.content}>

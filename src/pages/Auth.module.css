@@ -1,0 +1,142 @@
+.root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    background: #f8f8f6;
+    color: #111;
+    font-family: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* NAV */
+.nav {
+    padding: 20px 32px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.back {
+    text-decoration: none;
+    color: #666;
+    font-size: 13px;
+}
+
+.back:hover {
+    color: #111;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 20px 100px;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.title {
+    font-family: 'Caveat', cursive;
+    font-size: 42px;
+    font-weight: 400;
+    margin: 0 0 6px;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: #888;
+}
+
+.subtitleLink {
+    color: #111;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.subtitleLink:hover {
+    opacity: 0.7;
+}
+
+/* CARD */
+.card {
+    width: 100%;
+    max-width: 380px;
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 14px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* FIELD */
+.fieldGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fieldLabel {
+    font-size: 12px;
+    color: #777;
+}
+
+.input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.input:focus {
+    border-color: #111;
+}
+
+.inputError {
+    border-color: #d44;
+}
+
+/* ERROR */
+.errorMsg {
+    font-size: 13px;
+    color: #d44;
+    text-align: center;
+}
+
+/* BUTTON */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 999px;
+    border: 1px solid #111;
+    background: #111;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 4px;
+}
+
+.btn:hover:not(:disabled) {
+    opacity: 0.85;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
