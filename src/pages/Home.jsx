@@ -20,7 +20,7 @@ export default function Home() {
                 <span className={styles.logoMark}>ES</span>
                 <div className={styles.navActions}>
                     {isAuth ? (
-                        <button className={styles.navBtn} onClick={logout}>Sign out</button>
+                        <Link to="/profile" className={styles.navBtn}>Profile</Link>
                     ) : (
                         <>
                             <Link to="/login" className={styles.navLink}>Sign in</Link>

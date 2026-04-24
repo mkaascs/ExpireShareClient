@@ -1,3 +1,18 @@
+import { fetchWithAuth } from './client'
+
+export async function getUserFiles() {
+    const res = await fetchWithAuth(`${import.meta.env.VITE_API_TARGET}/api/file/`)
+    const data = await res.json().catch(() => ({}))
+    return { ok: res.ok, status: res.status, files: data.files ?? [] }
+}
+
+export async function deleteFile(alias) {
+    const res = await fetchWithAuth(`${import.meta.env.VITE_API_TARGET}/api/file/${encodeURIComponent(alias)}`, {
+        method: 'DELETE',
+    })
+    return { ok: res.ok, status: res.status }
+}
+
 export async function downloadFile(alias, password = '') {
     const headers = {}
     if (password) headers['X-Resource-Password'] = password
