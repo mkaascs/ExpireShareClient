@@ -7,11 +7,10 @@ const REFRESH_KEY = 'refresh_token'
 
 export function AuthProvider({ children }) {
     const [accessToken, setAccessToken] = useState(null)
-    const [loading, setLoading] = useState(true) // true пока не проверили сессию
+    const [loading, setLoading] = useState(true) 
     const timerRef = useRef(null)
     const silentRefreshRef = useRef(null)
 
-    // Планирует автообновление токена за 60 сек до истечения
     const scheduleRefresh = (expiresIn) => {
         clearTimeout(timerRef.current)
         const delay = (expiresIn - 60) * 1000
@@ -20,7 +19,6 @@ export function AuthProvider({ children }) {
         }
     }
 
-    // Тихое обновление токена по refresh_token из localStorage
     const silentRefresh = async () => {
         const stored = localStorage.getItem(REFRESH_KEY)
         if (!stored) return false
@@ -33,21 +31,20 @@ export function AuthProvider({ children }) {
             return true
         }
 
-        // refresh_token протух — сбрасываем сессию
         localStorage.removeItem(REFRESH_KEY)
         setAccessToken(null)
         return false
     }
 
-    // Держим актуальную версию silentRefresh в рефе (избегаем stale closure)
     silentRefreshRef.current = silentRefresh
 
-    // При монтировании: восстанавливаем сессию если есть refresh_token
     useEffect(() => {
         const stored = localStorage.getItem(REFRESH_KEY)
         if (stored) {
             silentRefresh().finally(() => setLoading(false))
-        } else {
+        } 
+        
+        else {
             setLoading(false)
         }
 

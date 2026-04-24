@@ -2,11 +2,11 @@ services:
   frontend:
     build:
       context: ./
-    environment:
-      - VITE_API_URL=${VITE_API_URL}
     volumes:
       - ./:/app
       - /app/node_modules
+    environment:
+      - VITE_API_TARGET=${VITE_API_TARGET}
     ports:
       - "3000:3000"
     networks:
