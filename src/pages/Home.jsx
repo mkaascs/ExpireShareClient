@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import styles from './Home.module.css'
 
+
 const HEADLINE = "Files that disappear\nwhen their work is done."
 const ACCENT_START = 11  // index of 'd' in 'disappear'
 const ACCENT_END   = 20  // index of '\n' (exclusive end of 'disappear')
@@ -27,7 +28,11 @@ function renderTyped(str) {
 export default function Home() {
     const [alias, setAlias] = useState('')
     const navigate = useNavigate()
-    const { isAuth } = useAuth()
+    const { isAuth, logout } = useAuth()
+
+    const handleLogout = async () => {
+        await logout()
+    }
 
     const [typed, setTyped]           = useState('')
     const [typingDone, setTypingDone] = useState(false)
@@ -57,10 +62,14 @@ export default function Home() {
                 <span className={styles.logoMark}>ES</span>
                 <div className={styles.navActions}>
                     {isAuth ? (
-                        <Link to="/files" className={styles.navBtn}>Files</Link>
+                        <>
+                            <Link to="/files"  className={styles.navBtn}>Files</Link>
+                            <Link to="/upload" className={styles.navBtnAccent}>Upload</Link>
+                            <button className={styles.navBtnMuted} onClick={handleLogout}>Sign out</button>
+                        </>
                     ) : (
                         <>
-                            <Link to="/login" className={styles.navLink}>Sign in</Link>
+                            <Link to="/login"    className={styles.navLink}>Sign in</Link>
                             <Link to="/register" className={styles.navBtn}>Register</Link>
                         </>
                     )}

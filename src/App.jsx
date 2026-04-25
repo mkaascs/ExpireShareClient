@@ -5,6 +5,7 @@ import Download from './pages/Download'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
+import Upload from './pages/Upload'
 
 export default function App() {
     return (
@@ -16,6 +17,7 @@ export default function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/files" element={<Profile />} />
+                    <Route path="/upload" element={<Upload />} />
                 </Routes>
             </AuthProvider>
         </BrowserRouter>

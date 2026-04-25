@@ -62,6 +62,27 @@ export async function downloadFile(alias, password = '') {
     return { ok: false, status: res.status, message }
 }
 
+export async function uploadFile({ file, ttl, maxDownloads, password }) {
+    const form = new FormData()
+    form.append('file', file)
+    if (ttl)           form.append('ttl', ttl)
+    if (maxDownloads)  form.append('max_downloads', String(maxDownloads))
+    if (password)      form.append('password', password)
+
+    const res = await fetchWithAuth(`${import.meta.env.VITE_API_TARGET}/api/upload`, {
+        method: 'POST',
+        body: form,
+    })
+
+    const data = await res.json().catch(() => ({}))
+    return {
+        ok:     res.ok,
+        status: res.status,
+        alias:  data.alias ?? '',
+        errors: data.errors ?? [],
+    }
+}
+
 export function triggerDownload(blob, filename) {
     const url = URL.createObjectURL(blob)
 

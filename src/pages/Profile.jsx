@@ -36,7 +36,7 @@ function timeUntil(str) {
 }
 
 export default function Profile() {
-    const { isAuth, logout } = useAuth()
+    const { isAuth } = useAuth()
     const navigate = useNavigate()
 
     const [files, setFiles] = useState([])
@@ -78,18 +78,10 @@ export default function Profile() {
         setDeleting(null)
     }
 
-    const handleLogout = async () => {
-        await logout()
-        navigate('/')
-    }
-
     return (
         <div className={styles.root}>
             <nav className={styles.nav}>
                 <Link to="/" className={styles.logo}>ES</Link>
-                <button className={styles.logoutBtn} onClick={handleLogout}>
-                    Sign out
-                </button>
             </nav>
 
             <main className={styles.main}>
