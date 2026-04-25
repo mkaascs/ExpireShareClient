@@ -15,7 +15,7 @@ export default function App() {
                     <Route path="/download/:alias" element={<Download />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/files" element={<Profile />} />
                 </Routes>
             </AuthProvider>
         </BrowserRouter>

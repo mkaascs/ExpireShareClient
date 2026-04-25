@@ -3,36 +3,40 @@
     display: flex;
     flex-direction: column;
 
-    background: #f8f8f6;
-    color: #111;
+    background: var(--bg);
+    color: var(--text);
 
     font-family: 'Inter', sans-serif;
 }
 
-* {
-    box-sizing: border-box;
-}
-
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+/* KEYFRAMES */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* NAV */
 .nav {
-    padding: 20px 32px;
-    border-bottom: 1px solid #e5e5e5;
+    padding: 20px 36px;
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.1);
 }
 
 .back {
     text-decoration: none;
-    color: #666;
+    color: var(--text-3);
     font-size: 13px;
+    letter-spacing: 0.01em;
+    transition: color 0.15s;
 }
 
 .back:hover {
-    color: #111;
+    color: var(--accent);
 }
 
 /* MAIN */
@@ -44,31 +48,39 @@ html, body {
     align-items: center;
     justify-content: center;
 
-    padding: 40px 20px 120px;
+    padding: 40px 20px 100px;
+    gap: 20px;
 }
 
 /* HEADER */
 .header {
     text-align: center;
-    margin-bottom: 24px;
+
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards;
+    animation-delay: 0.1s;
 }
 
 .title {
-    font-family: 'Caveat', cursive;
-    font-size: 42px;
-    font-weight: 400;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     margin: 0 0 10px;
+    color: var(--text);
 }
 
 .aliasBadge {
-    display: inline-block;
-    padding: 4px 12px;
-    background: #efefed;
-    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: rgba(var(--accent-rgb), 0.07);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    border-radius: 6px;
     font-size: 12px;
-    color: #666;
+    color: var(--text-2);
     font-family: 'SF Mono', 'Fira Mono', monospace;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
 }
 
 /* CARD */
@@ -76,11 +88,15 @@ html, body {
     width: 100%;
     max-width: 400px;
 
-    background: white;
-    border: 1px solid #e5e5e5;
-    border-radius: 14px;
+    opacity: 0;
+    animation: fadeUp 0.45s ease forwards;
+    animation-delay: 0.25s;
 
-    padding: 32px 28px;
+    background: var(--surface);
+    border: 1px solid rgba(var(--accent-rgb), 0.1);
+    border-radius: 12px;
+
+    padding: 28px;
 }
 
 /* STATES */
@@ -90,16 +106,16 @@ html, body {
     align-items: center;
     text-align: center;
     gap: 8px;
-    padding: 8px 0;
+    padding: 12px 0;
 }
 
 .stateIcon {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: #f0faf4;
-    color: #2a9d5c;
-    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(var(--success-rgb), 0.12);
+    color: var(--success);
+    font-size: 18px;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -108,113 +124,136 @@ html, body {
 }
 
 .stateIconMuted {
-    background: #f4f4f4;
-    color: #aaa;
+    background: rgba(var(--accent-rgb), 0.07);
+    color: var(--text-3);
 }
 
 .stateIconError {
-    background: #fff2f2;
-    color: #d44;
+    background: rgba(var(--error-rgb), 0.12);
+    color: var(--error);
 }
 
 .stateTitle {
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
 }
 
 .stateText {
     font-size: 13px;
-    color: #888;
+    color: var(--text-3);
     margin-top: 2px;
 }
 
 .stateDesc {
     font-size: 13px;
-    color: #888;
-    max-width: 260px;
-    line-height: 1.5;
+    color: var(--text-3);
+    max-width: 240px;
+    line-height: 1.6;
 }
 
 .stateDescError {
-    color: #d44;
+    color: var(--error);
 }
 
 /* PASSWORD */
 .passwordHint {
     font-size: 13px;
-    color: #555;
+    color: var(--text-2);
     margin-bottom: 16px;
     text-align: center;
+    line-height: 1.5;
 }
 
 /* INPUT */
 .fieldGroup {
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
 
 .fieldLabel {
-    font-size: 12px;
-    color: #777;
-    margin-bottom: 6px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 7px;
     display: block;
 }
 
 .input {
     width: 100%;
-    padding: 10px 12px;
+    padding: 10px 13px;
 
-    border: 1px solid #ddd;
+    border: 1px solid rgba(var(--accent-rgb), 0.12);
     border-radius: 8px;
 
     font-size: 14px;
+    font-family: 'Inter', sans-serif;
     outline: none;
+    background: rgba(var(--accent-rgb), 0.04);
+    color: var(--text);
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.input::placeholder {
+    color: var(--text-3);
 }
 
 .input:focus {
-    border-color: #111;
+    border-color: rgba(var(--accent-rgb), 0.4);
+    background: rgba(var(--accent-rgb), 0.07);
 }
 
 /* BUTTON */
 .btn {
     width: 100%;
-    padding: 12px;
+    padding: 11px;
 
-    border-radius: 999px;
-    border: 1px solid #111;
+    border-radius: 8px;
+    border: none;
 
-    background: #111;
-    color: white;
+    background: var(--accent);
+    color: var(--bg);
     font-size: 14px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
 
     cursor: pointer;
-    transition: opacity 0.2s;
+    transition: background 0.2s;
 }
 
 .btn:hover:not(:disabled) {
-    opacity: 0.85;
+    background: var(--accent-hover);
+}
+
+.btn:disabled {
+    opacity: 0.35;
+    cursor: default;
 }
 
 .retryBtn {
-    margin-top: 8px;
+    margin-top: 6px;
     background: none;
     border: none;
-    color: #666;
+    color: var(--text-3);
     font-size: 13px;
+    font-family: 'Inter', sans-serif;
     cursor: pointer;
     text-decoration: underline;
     text-underline-offset: 3px;
+    transition: color 0.15s;
 }
 
 .retryBtn:hover {
-    color: #111;
+    color: var(--accent);
 }
 
 /* SPINNER */
 .spinner {
     width: 22px;
     height: 22px;
-    border: 2px solid #e5e5e5;
-    border-top: 2px solid #111;
+    border: 2px solid rgba(var(--accent-rgb), 0.1);
+    border-top: 2px solid var(--text-2);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
     margin-bottom: 4px;

@@ -1,0 +1,29 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+:root {
+    /* Accent — cool steel blue */
+    --accent:        #aec9dd;
+    --accent-hover:  #c3d8ea;
+    --accent-rgb:    174, 201, 221;   /* for rgba() usage */
+
+    /* Semantic */
+    --error:         #d97272;
+    --error-rgb:     217, 114, 114;
+    --success:       #74b08a;
+    --success-rgb:   116, 176, 138;
+
+    /* Base surfaces */
+    --bg:            #0d0c0b;
+    --surface:       #111415;
+    --text:          #dfeced;
+    --text-2:        #48505a;
+    --text-3:        #40464a;
+}
