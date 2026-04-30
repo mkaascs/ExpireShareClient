@@ -44,6 +44,14 @@ export default function Profile() {
     const [error, setError] = useState('')
     const [deleting, setDeleting] = useState(null)
     const [confirmFile, setConfirmFile] = useState(null)
+    const [copiedAlias, setCopiedAlias] = useState(null)
+
+    const handleCopy = (alias) => {
+        const url = `${window.location.origin}/download/${alias}`
+        navigator.clipboard.writeText(url)
+        setCopiedAlias(alias)
+        setTimeout(() => setCopiedAlias(null), 2000)
+    }
 
     const fetchedRef = useRef(false)
 
@@ -115,9 +123,15 @@ export default function Profile() {
                     <ul className={styles.list}>
                         {files.map(file => (
                             <li key={file.alias} className={styles.item}>
-                                <div className={styles.itemMain}>
+                                <div
+                                    className={styles.itemMain}
+                                    onClick={() => handleCopy(file.alias)}
+                                    title="Copy download link"
+                                >
                                     <span className={styles.filename}>{file.filename}</span>
-                                    <span className={styles.alias}>{file.alias}</span>
+                                    <span className={copiedAlias === file.alias ? styles.aliasCopied : styles.alias}>
+                                        {copiedAlias === file.alias ? 'Copied!' : file.alias}
+                                    </span>
                                 </div>
                                 <div className={styles.itemMeta}>
                                     <span className={styles.metaTag}>

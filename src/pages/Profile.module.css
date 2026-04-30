@@ -101,6 +101,16 @@
     align-items: center;
     gap: 10px;
     min-width: 0;
+    cursor: pointer;
+}
+
+.itemMain:hover .filename {
+    color: var(--text);
+}
+
+.itemMain:hover .alias {
+    border-color: rgba(var(--accent-rgb), 0.3);
+    color: var(--text-2);
 }
 
 .filename {
@@ -119,6 +129,20 @@
     color: var(--text-3);
     background: rgba(var(--accent-rgb), 0.06);
     border: 1px solid rgba(var(--accent-rgb), 0.12);
+    padding: 2px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    letter-spacing: 0.03em;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+.aliasCopied {
+    font-family: 'SF Mono', 'Fira Mono', monospace;
+    font-size: 11px;
+    color: var(--success);
+    background: rgba(var(--success-rgb), 0.08);
+    border: 1px solid rgba(var(--success-rgb), 0.25);
     padding: 2px 8px;
     border-radius: 5px;
     white-space: nowrap;
