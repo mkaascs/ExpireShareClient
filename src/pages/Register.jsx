@@ -27,6 +27,8 @@ export default function Register() {
 
         if (res.status === 409) {
             setError('Login or email already taken.')
+        } else if (res.status === 429) {
+            setError('Too many attempts. Please wait and try again.')
         } else if (res.status === 422 || res.data?.errors?.length) {
             setError(res.data.errors[0])
         } else {

@@ -68,6 +68,11 @@ export default function Download() {
                 setStatus(STATUS.NOT_FOUND)
                 break
 
+            case 429:
+                setStatus(STATUS.ERROR)
+                setMessage('Too many download attempts. Please wait and try again.')
+                break
+
             default:
                 setStatus(STATUS.ERROR)
                 setMessage(result.message)
