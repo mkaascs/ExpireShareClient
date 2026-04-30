@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
+import { ThemeProvider } from './context/ThemeContext'
+import ThemeToggle from './components/ThemeToggle'
 import Home from './pages/Home'
 import Download from './pages/Download'
 import Login from './pages/Login'
@@ -10,16 +12,19 @@ import Upload from './pages/Upload'
 export default function App() {
     return (
         <BrowserRouter>
-            <AuthProvider>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/download/:alias" element={<Download />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/files" element={<Profile />} />
-                    <Route path="/upload" element={<Upload />} />
-                </Routes>
-            </AuthProvider>
+            <ThemeProvider>
+                <AuthProvider>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/download/:alias" element={<Download />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/files" element={<Profile />} />
+                        <Route path="/upload" element={<Upload />} />
+                    </Routes>
+                    <ThemeToggle />
+                </AuthProvider>
+            </ThemeProvider>
         </BrowserRouter>
     )
 }

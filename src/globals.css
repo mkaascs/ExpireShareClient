@@ -8,22 +8,48 @@ html, body {
     height: 100%;
 }
 
-:root {
-    /* Accent — cool steel blue */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+    transition:
+        background-color 0.35s ease,
+        border-color 0.35s ease,
+        color 0.35s ease,
+        box-shadow 0.35s ease !important;
+}
+
+:root,
+[data-theme="dark"] {
     --accent:        #aec9dd;
     --accent-hover:  #c3d8ea;
-    --accent-rgb:    174, 201, 221;   /* for rgba() usage */
+    --accent-rgb:    174, 201, 221;
 
-    /* Semantic */
     --error:         #d97272;
     --error-rgb:     217, 114, 114;
     --success:       #74b08a;
     --success-rgb:   116, 176, 138;
 
-    /* Base surfaces */
     --bg:            #0d0c0b;
     --surface:       #111415;
     --text:          #dfeced;
     --text-2:        #48505a;
     --text-3:        #40464a;
+}
+
+[data-theme="light"] {
+    --accent:        #3d7ca8;
+    --accent-hover:  #2f6990;
+    --accent-rgb:    61, 124, 168;
+
+    --error:         #c0504a;
+    --error-rgb:     192, 80, 74;
+    --success:       #3e8a5a;
+    --success-rgb:   62, 138, 90;
+
+    --bg:            #f0f2f5;
+    --surface:       #ffffff;
+    --text:          #111820;
+    --text-2:        #5a6474;
+    --text-3:        #9aa1ad;
 }
