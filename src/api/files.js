@@ -1,9 +1,18 @@
 import { fetchWithAuth } from './client'
 
-export async function getUserFiles() {
-    const res = await fetchWithAuth(`${import.meta.env.VITE_API_TARGET}/api/file/`)
+export async function getUserFiles(page = 1, limit = 10) {
+    const res = await fetchWithAuth(
+        `${import.meta.env.VITE_API_TARGET}/api/file/?page=${page}&limit=${limit}`
+    )
     const data = await res.json().catch(() => ({}))
-    return { ok: res.ok, status: res.status, files: data.files ?? [] }
+    return {
+        ok:     res.ok,
+        status: res.status,
+        files:  data.files ?? [],
+        total:  data.total ?? 0,
+        page:   data.page  ?? page,
+        limit:  data.limit ?? limit,
+    }
 }
 
 export async function deleteFile(alias) {

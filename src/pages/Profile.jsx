@@ -1,8 +1,10 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { getUserFiles, deleteFile } from '../api/files'
 import styles from './Profile.module.css'
+
+const LIMIT = 10
 
 function parseDuration(str) {
     if (!str) return 0
@@ -14,7 +16,6 @@ function parseDuration(str) {
         if (unit === 'm') ms += n * 60_000
         if (unit === 's') ms += n * 1_000
     }
-
     return ms
 }
 
@@ -40,20 +41,14 @@ export default function Profile() {
     const navigate = useNavigate()
 
     const [files, setFiles] = useState([])
+    const [total, setTotal] = useState(0)
+    const [page, setPage] = useState(1)
+    const [refetchKey, setRefetchKey] = useState(0)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
     const [deleting, setDeleting] = useState(null)
     const [confirmFile, setConfirmFile] = useState(null)
     const [copiedAlias, setCopiedAlias] = useState(null)
-
-    const handleCopy = (alias) => {
-        const url = `${window.location.origin}/download/${alias}`
-        navigator.clipboard.writeText(url)
-        setCopiedAlias(alias)
-        setTimeout(() => setCopiedAlias(null), 2000)
-    }
-
-    const fetchedRef = useRef(false)
 
     useEffect(() => { document.title = 'Your files · ExpireShare' }, [])
 
@@ -63,30 +58,44 @@ export default function Profile() {
             return
         }
 
-        if (fetchedRef.current) return
-        fetchedRef.current = true
+        setLoading(true)
+        setError('')
 
-        getUserFiles()
+        getUserFiles(page, LIMIT)
             .then(res => {
                 if (res.ok) {
                     setFiles(res.files)
+                    setTotal(res.total)
                 } else {
                     setError('Failed to load files.')
                 }
             })
             .finally(() => setLoading(false))
-    }, [isAuth])
+    }, [isAuth, page, refetchKey])
+
+    const handleCopy = (alias) => {
+        const url = `${window.location.origin}/download/${alias}`
+        navigator.clipboard.writeText(url)
+        setCopiedAlias(alias)
+        setTimeout(() => setCopiedAlias(null), 2000)
+    }
 
     const handleDeleteConfirm = async () => {
         const { alias } = confirmFile
         setConfirmFile(null)
         setDeleting(alias)
         const res = await deleteFile(alias)
-        if (res.ok) {
-            setFiles(f => f.filter(file => file.alias !== alias))
-        }
         setDeleting(null)
+        if (res.ok) {
+            if (files.length === 1 && page > 1) {
+                setPage(p => p - 1)
+            } else {
+                setRefetchKey(k => k + 1)
+            }
+        }
     }
+
+    const totalPages = Math.ceil(total / LIMIT)
 
     return (
         <div className={styles.root}>
@@ -98,7 +107,7 @@ export default function Profile() {
                 <div className={styles.header}>
                     <h1 className={styles.title}>Your files</h1>
                     {!loading && !error && (
-                        <span className={styles.count}>{files.length}</span>
+                        <span className={styles.count}>{total}</span>
                     )}
                 </div>
 
@@ -122,41 +131,65 @@ export default function Profile() {
                 )}
 
                 {!loading && !error && files.length > 0 && (
-                    <ul className={styles.list}>
-                        {files.map(file => (
-                            <li key={file.alias} className={styles.item}>
-                                <div
-                                    className={styles.itemMain}
-                                    onClick={() => handleCopy(file.alias)}
-                                    title="Copy download link"
-                                >
-                                    <span className={styles.filename}>{file.filename}</span>
-                                    <span className={copiedAlias === file.alias ? styles.aliasCopied : styles.alias}>
-                                        {copiedAlias === file.alias ? 'Copied!' : file.alias}
-                                    </span>
-                                </div>
-                                <div className={styles.itemMeta}>
-                                    <span className={styles.metaTag}>
-                                        {file.downloads_left == null
-                                            ? '∞ downloads'
-                                            : `${file.downloads_left} left`}
-                                    </span>
-                                    <span className={styles.metaDot}>·</span>
-                                    <span className={styles.metaTag}>
-                                        {timeUntil(file.expires_at)}
-                                    </span>
-                                </div>
+                    <>
+                        <ul className={styles.list}>
+                            {files.map(file => (
+                                <li key={file.alias} className={styles.item}>
+                                    <div
+                                        className={styles.itemMain}
+                                        onClick={() => handleCopy(file.alias)}
+                                        title="Copy download link"
+                                    >
+                                        <span className={styles.filename}>{file.filename}</span>
+                                        <span className={copiedAlias === file.alias ? styles.aliasCopied : styles.alias}>
+                                            {copiedAlias === file.alias ? 'Copied!' : file.alias}
+                                        </span>
+                                    </div>
+                                    <div className={styles.itemMeta}>
+                                        <span className={styles.metaTag}>
+                                            {file.downloads_left == null
+                                                ? '∞ downloads'
+                                                : `${file.downloads_left} left`}
+                                        </span>
+                                        <span className={styles.metaDot}>·</span>
+                                        <span className={styles.metaTag}>
+                                            {timeUntil(file.expires_at)}
+                                        </span>
+                                    </div>
+                                    <button
+                                        className={styles.deleteBtn}
+                                        onClick={() => setConfirmFile({ alias: file.alias, filename: file.filename })}
+                                        disabled={deleting === file.alias}
+                                        title="Delete file"
+                                    >
+                                        {deleting === file.alias ? '...' : '×'}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+
+                        {totalPages > 1 && (
+                            <div className={styles.pagination}>
                                 <button
-                                    className={styles.deleteBtn}
-                                    onClick={() => setConfirmFile({ alias: file.alias, filename: file.filename })}
-                                    disabled={deleting === file.alias}
-                                    title="Delete file"
+                                    className={styles.pageBtn}
+                                    onClick={() => setPage(p => p - 1)}
+                                    disabled={page === 1}
                                 >
-                                    {deleting === file.alias ? '...' : '×'}
+                                    ← Prev
                                 </button>
-                            </li>
-                        ))}
-                    </ul>
+                                <span className={styles.pageInfo}>
+                                    {page} / {totalPages}
+                                </span>
+                                <button
+                                    className={styles.pageBtn}
+                                    onClick={() => setPage(p => p + 1)}
+                                    disabled={page === totalPages}
+                                >
+                                    Next →
+                                </button>
+                            </div>
+                        )}
+                    </>
                 )}
             </main>
 
