@@ -37,6 +37,8 @@ export default function Home() {
     const [typed, setTyped]           = useState('')
     const [typingDone, setTypingDone] = useState(false)
 
+    useEffect(() => { document.title = 'ExpireShare' }, [])
+
     useEffect(() => {
         let i = 0
         const id = setInterval(() => {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import * as authApi from '../api/auth'
 import styles from './Auth.module.css'
@@ -9,6 +9,8 @@ export default function Register() {
     const [form, setForm] = useState({ login: '', email: '', password: '' })
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+
+    useEffect(() => { document.title = 'Create account · ExpireShare' }, [])
 
     const set = (field) => (e) => setForm(f => ({ ...f, [field]: e.target.value }))
 

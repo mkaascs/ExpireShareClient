@@ -55,6 +55,8 @@ export default function Profile() {
 
     const fetchedRef = useRef(false)
 
+    useEffect(() => { document.title = 'Your files · ExpireShare' }, [])
+
     useEffect(() => {
         if (!isAuth) {
             navigate('/login')

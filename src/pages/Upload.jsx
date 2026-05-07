@@ -26,6 +26,8 @@ export default function Upload() {
         if (!isAuth) navigate('/login')
     }, [isAuth])
 
+    useEffect(() => { document.title = 'Upload · ExpireShare' }, [])
+
     const [file, setFile]                   = useState(null)
     const [ttl, setTtl]                     = useState(TTL_DEFAULT)
     const [maxDownloads, setMaxDownloads]   = useState(String(MAX_DOWNLOADS_DEFAULT))

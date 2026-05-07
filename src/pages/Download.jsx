@@ -20,6 +20,8 @@ export default function Download() {
     const passwordRef = useRef(null)
     const attemptedAliasRef = useRef(null)
 
+    useEffect(() => { document.title = `${alias} · ExpireShare` }, [alias])
+
     useEffect(() => {
         if (attemptedAliasRef.current === alias) return
         attemptedAliasRef.current = alias

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import styles from './Auth.module.css'
@@ -10,6 +10,8 @@ export default function Login() {
     const [form, setForm] = useState({ login: '', password: '' })
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+
+    useEffect(() => { document.title = 'Sign in · ExpireShare' }, [])
 
     const set = (field) => (e) => setForm(f => ({ ...f, [field]: e.target.value }))
 
