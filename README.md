@@ -4,6 +4,14 @@ Web interface for [expire-share](https://github.com/mkaascs/ExpireShare). Allows
 
 ---
 
+## Preview
+
+![Home page](preview/home-page.png)
+![Upload page](preview/upload-page.png)
+![Files page](preview/files-page-dark.png)
+
+---
+
 ## Features
 
 - **File download** — enter an alias, file downloads automatically; password prompt appears if required
