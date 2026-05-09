@@ -1,0 +1,76 @@
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    background: var(--bg);
+    border: 1px solid rgba(var(--accent-rgb), 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 24px;
+
+    opacity: 0;
+    animation: fadeUp 0.45s ease forwards;
+    animation-delay: 0.2s;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 16px 18px;
+    gap: 14px;
+}
+
+.section + .section {
+    border-top: 1px solid rgba(var(--accent-rgb), 0.08);
+}
+
+.donut {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+.donutFill {
+    transition: stroke-dashoffset 0.75s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s;
+}
+
+.donutText {
+    font-size: 20px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    dominant-baseline: middle;
+    text-anchor: middle;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    text-align: center;
+}
+
+.label {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+}
+
+.value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.sub {
+    font-size: 11px;
+    color: var(--text-3);
+}

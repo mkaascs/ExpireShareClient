@@ -1,6 +1,6 @@
 // ─── Upload ────────────────────────────────────────────────────────────────
-export const MAX_FILE_SIZE_BYTES = 500 * 1024 * 1024   // 500 MB
-export const MAX_FILE_SIZE_LABEL = '500 MB'
+export const MAX_FILE_SIZE_BYTES = 2 * 1024 * 1024 * 1024   // 2 GB
+export const MAX_FILE_SIZE_LABEL = '2 GB'
 
 export const MAX_DOWNLOADS_DEFAULT = 1
 export const MAX_DOWNLOADS_LIMIT   = 10_000

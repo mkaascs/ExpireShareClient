@@ -43,7 +43,7 @@ export default function Upload() {
     const pickFile = (f) => {
         if (!f) return
         if (f.size > MAX_FILE_SIZE_BYTES) {
-            setError(`File exceeds the ${MAX_FILE_SIZE_LABEL} limit.`)
+            setError(`File is too large. Maximum size is ${MAX_FILE_SIZE_LABEL}.`)
             return
         }
         setFile(f)
@@ -76,9 +76,9 @@ export default function Upload() {
             setResult({ alias: res.alias, fileName: file.name })
         } else {
             setError(
-                res.status === 413 ? 'File exceeds the server limit.' :
-                res.status === 403 ? 'Upload limit reached. Delete unnecessary files.' :
-                res.errors[0]     ?? 'Upload failed. Try again.'
+                res.status === 413 ? 'Unable to upload. Check file size or free up storage space.' :
+                res.status === 403 ? 'File limit reached. Delete unnecessary files and try again.' :
+                res.errors?.[0]   ?? 'Upload failed. Try again.'
             )
         }
     }

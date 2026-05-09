@@ -6,12 +6,23 @@ export async function getUserFiles(page = 1, limit = 10) {
     )
     const data = await res.json().catch(() => ({}))
     return {
-        ok:     res.ok,
+        ok:    res.ok,
         status: res.status,
         files:  data.files ?? [],
         total:  data.total ?? 0,
-        page:   data.page  ?? page,
-        limit:  data.limit ?? limit,
+    }
+}
+
+export async function getFileStats() {
+    const res = await fetchWithAuth(`${import.meta.env.VITE_API_TARGET}/api/file/stat`)
+    const data = await res.json().catch(() => ({}))
+    return {
+        ok:            res.ok,
+        status:        res.status,
+        count:         data.count         ?? 0,
+        max_count:     data.max_count     ?? 50,
+        occupied_size: data.occupied_size ?? 0,
+        max_size:      data.max_size      ?? 0,
     }
 }
 
