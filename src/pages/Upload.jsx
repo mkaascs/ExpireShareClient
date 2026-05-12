@@ -34,7 +34,8 @@ export default function Upload() {
     const [password, setPassword]           = useState('')
     const [drag, setDrag]                   = useState(false)
     const [uploading, setUploading]         = useState(false)
-    const [result, setResult]               = useState(null)  // { alias, fileName }
+    const [progress, setProgress]           = useState(null)
+    const [result, setResult]               = useState(null)
     const [error, setError]                 = useState('')
     const [copied, setCopied]               = useState(false)
 
@@ -61,6 +62,7 @@ export default function Upload() {
         if (!file || uploading) return
 
         setUploading(true)
+        setProgress(0)
         setError('')
 
         const res = await uploadFile({
@@ -68,14 +70,17 @@ export default function Upload() {
             ttl,
             maxDownloads: parseInt(maxDownloads, 10),
             password:     password || undefined,
+            onProgress:   setProgress,
         })
 
         setUploading(false)
+        setProgress(null)
 
         if (res.ok) {
             setResult({ alias: res.alias, fileName: file.name })
         } else {
             setError(
+                res.status === 0   ? 'Connection lost. The file may have been uploaded — check your files.' :
                 res.status === 413 ? 'Unable to upload. Check file size or free up storage space.' :
                 res.status === 403 ? 'File limit reached. Delete unnecessary files and try again.' :
                 res.errors?.[0]   ?? 'Upload failed. Try again.'
@@ -223,15 +228,29 @@ export default function Upload() {
 
                             {error && <div className={styles.errorMsg}>{error}</div>}
 
-                            <button
-                                type="submit"
-                                className={styles.submitBtn}
-                                disabled={!file || uploading}
-                            >
-                                {uploading
-                                    ? <><span className={styles.spinner} />Uploading…</>
-                                    : 'Upload'}
-                            </button>
+                            {uploading ? (
+                                <div className={styles.progressWrap}>
+                                    <div className={styles.progressBar}>
+                                        <div
+                                            className={styles.progressFill}
+                                            style={{ width: `${progress ?? 0}%` }}
+                                        />
+                                    </div>
+                                    <div className={styles.progressLabel}>
+                                        {progress < 100
+                                            ? `Uploading… ${progress}%`
+                                            : 'Processing…'}
+                                    </div>
+                                </div>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    className={styles.submitBtn}
+                                    disabled={!file}
+                                >
+                                    Upload
+                                </button>
+                            )}
                         </form>
                     </>
                 )}
