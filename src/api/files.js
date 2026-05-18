@@ -38,7 +38,7 @@ export async function downloadFile(alias, password = '') {
     const headers = {}
     if (password) headers['X-Resource-Password'] = password
 
-    const res = await fetch(`${import.meta.env.VITE_API_TARGET}/download/${encodeURIComponent(alias)}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_TARGET}/api/download/${encodeURIComponent(alias)}`, {
         method: 'GET',
         headers,
     })
