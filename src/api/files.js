@@ -1,13 +1,11 @@
 import { fetchWithAuth } from './client'
-import { ACCESS_KEY } from '../context/AuthContext'
+import { API_BASE, ACCESS_KEY } from './config'
 
 export async function getUserFiles(page = 1, limit = 10) {
-    const res = await fetchWithAuth(
-        `${import.meta.env.VITE_API_TARGET}/api/file/?page=${page}&limit=${limit}`
-    )
+    const res  = await fetchWithAuth(`${API_BASE}/file/?page=${page}&limit=${limit}`)
     const data = await res.json().catch(() => ({}))
     return {
-        ok:    res.ok,
+        ok:     res.ok,
         status: res.status,
         files:  data.files ?? [],
         total:  data.total ?? 0,
@@ -15,7 +13,7 @@ export async function getUserFiles(page = 1, limit = 10) {
 }
 
 export async function getFileStats() {
-    const res = await fetchWithAuth(`${import.meta.env.VITE_API_TARGET}/api/file/stat`)
+    const res  = await fetchWithAuth(`${API_BASE}/file/stat`)
     const data = await res.json().catch(() => ({}))
     return {
         ok:            res.ok,
@@ -28,59 +26,39 @@ export async function getFileStats() {
 }
 
 export async function deleteFile(alias) {
-    const res = await fetchWithAuth(`${import.meta.env.VITE_API_TARGET}/api/file/${encodeURIComponent(alias)}`, {
+    const res = await fetchWithAuth(`${API_BASE}/file/${encodeURIComponent(alias)}`, {
         method: 'DELETE',
     })
     return { ok: res.ok, status: res.status }
 }
 
 export async function downloadFile(alias, password = '') {
-    const headers = {}
-    if (password) headers['X-Resource-Password'] = password
+    const headers = password ? { 'X-Resource-Password': password } : {}
 
-    const res = await fetch(`${import.meta.env.VITE_API_TARGET}/api/download/${encodeURIComponent(alias)}`, {
+    const res = await fetch(`${API_BASE}/download/${encodeURIComponent(alias)}`, {
         method: 'GET',
         headers,
     })
 
     const contentType = res.headers.get('Content-Type') || ''
-    const disposition = res.headers.get('Content-Disposition') || ''
-
     if (contentType.includes('text/html')) {
-        return {
-            ok: false,
-            status: res.status || 500,
-            message: 'Invalid server response (HTML instead of file)'
-        }
+        return { ok: false, status: res.status || 500, message: 'Invalid server response (HTML instead of file)' }
     }
 
-    if (res.ok) {
-        if (!disposition) {
-            return {
-                ok: false,
-                status: 500,
-                message: 'Missing Content-Disposition header'
-            }
-        }
-
-        const blob = await res.blob()
-
-        const match = disposition.match(/filename[^;=\n]*=["']?([^"';\n]+)["']?/)
-        const filename = match?.[1]?.trim() ?? alias
-
-        return { ok: true, blob, filename }
+    if (!res.ok) {
+        return { ok: false, status: res.status, message: await parseErrorMessage(res) }
     }
 
-    let message = 'Something went wrong.'
+    const disposition = res.headers.get('Content-Disposition') || ''
+    if (!disposition) {
+        return { ok: false, status: 500, message: 'Missing Content-Disposition header' }
+    }
 
-    try {
-        const json = await res.json()
-        if (Array.isArray(json.errors) && json.errors.length > 0) {
-            message = json.errors[0]
-        }
-    } catch { /* empty */ }
+    const blob     = await res.blob()
+    const match    = disposition.match(/filename[^;=\n]*=["']?([^"';\n]+)["']?/)
+    const filename = match?.[1]?.trim() ?? alias
 
-    return { ok: false, status: res.status, message }
+    return { ok: true, blob, filename }
 }
 
 export function uploadFile({ file, ttl, maxDownloads, password, onProgress }) {
@@ -99,7 +77,7 @@ export function uploadFile({ file, ttl, maxDownloads, password, onProgress }) {
 
         xhr.addEventListener('load', () => {
             let data = {}
-            try { data = JSON.parse(xhr.responseText) } catch {}
+            try { data = JSON.parse(xhr.responseText) } catch { /* empty */ }
             resolve({
                 ok:     xhr.status >= 200 && xhr.status < 300,
                 status: xhr.status,
@@ -108,14 +86,25 @@ export function uploadFile({ file, ttl, maxDownloads, password, onProgress }) {
             })
         })
 
-        xhr.addEventListener('error', () => resolve({ ok: false, status: 0, alias: '', errors: [] }))
-        xhr.addEventListener('abort', () => resolve({ ok: false, status: 0, alias: '', errors: [] }))
+        const failed = { ok: false, status: 0, alias: '', errors: [] }
+        xhr.addEventListener('error', () => resolve(failed))
+        xhr.addEventListener('abort', () => resolve(failed))
 
         const token = localStorage.getItem(ACCESS_KEY)
-        xhr.open('POST', `${import.meta.env.VITE_API_TARGET}/api/upload`)
+        xhr.open('POST', `${API_BASE}/upload`)
         if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`)
         xhr.send(form)
     })
+}
+
+async function parseErrorMessage(res) {
+    try {
+        const json = await res.json()
+        if (Array.isArray(json.errors) && json.errors.length > 0) {
+            return json.errors[0]
+        }
+    } catch { /* empty */ }
+    return 'Something went wrong.'
 }
 
 export function triggerDownload(blob, filename) {

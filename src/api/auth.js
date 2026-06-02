@@ -1,12 +1,12 @@
-const BASE = `${import.meta.env.VITE_API_TARGET}/api/auth`
+import { API_BASE } from './config'
 
 async function request(path, body) {
-    const res = await fetch(`${BASE}${path}`, {
+    const res = await fetch(`${API_BASE}/auth${path}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
     })
-    
+
     const data = await res.json().catch(() => ({}))
     return { ok: res.ok, status: res.status, data }
 }
