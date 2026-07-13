@@ -1,9 +1,8 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import * as authApi from '../api/auth'
 import { registerTokenSync } from '../api/client'
 import { ACCESS_KEY, REFRESH_KEY } from '../api/config'
-
-const AuthContext = createContext(null)
+import { AuthContext } from './authContextObject'
 
 export function AuthProvider({ children }) {
     const [accessToken, setAccessToken] = useState(() => localStorage.getItem(ACCESS_KEY))
@@ -52,8 +51,4 @@ export function AuthProvider({ children }) {
             {children}
         </AuthContext.Provider>
     )
-}
-
-export function useAuth() {
-    return useContext(AuthContext)
 }

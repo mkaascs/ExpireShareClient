@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { downloadFile, triggerDownload } from '../api/files.js'
 import styles from './Download.module.css'
@@ -22,19 +22,7 @@ export default function Download() {
 
     useEffect(() => { document.title = `${alias} · ExpireShare` }, [alias])
 
-    useEffect(() => {
-        if (attemptedAliasRef.current === alias) return
-        attemptedAliasRef.current = alias
-        attempt(false)
-    }, [alias])
-
-    useEffect(() => {
-        if (status === STATUS.PASSWORD) {
-            passwordRef.current?.focus()
-        }
-    }, [status])
-
-    const attempt = async (withPassword) => {
+    const attempt = useCallback(async (withPassword) => {
         setStatus(STATUS.LOADING)
         setMessage('')
 
@@ -79,7 +67,19 @@ export default function Download() {
                 setStatus(STATUS.ERROR)
                 setMessage(result.message)
         }
-    }
+    }, [alias, password])
+
+    useEffect(() => {
+        if (attemptedAliasRef.current === alias) return
+        attemptedAliasRef.current = alias
+        attempt(false)
+    }, [alias, attempt])
+
+    useEffect(() => {
+        if (status === STATUS.PASSWORD) {
+            passwordRef.current?.focus()
+        }
+    }, [status])
 
     return (
         <div className={styles.root}>

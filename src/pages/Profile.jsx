@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuth'
 import { getUserFiles, deleteFile, getFileStats } from '../api/files'
 import StorageStats from '../components/StorageStats'
 import { formatBytes } from '../utils/format'
@@ -29,11 +29,15 @@ export default function Profile() {
     useEffect(() => {
         if (!isAuth) { navigate('/login'); return }
 
+        let cancelled = false
+
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLoading(true)
         setError('')
 
         Promise.all([getUserFiles(page, LIMIT), getFileStats()])
             .then(([filesRes, statsRes]) => {
+                if (cancelled) return
                 if (filesRes.ok) {
                     setFiles(filesRes.files)
                     setTotal(filesRes.total)
@@ -42,8 +46,10 @@ export default function Profile() {
                 }
                 if (statsRes.ok) setStats(statsRes)
             })
-            .finally(() => setLoading(false))
-    }, [isAuth, page, refetchKey])
+            .finally(() => { if (!cancelled) setLoading(false) })
+
+        return () => { cancelled = true }
+    }, [isAuth, page, refetchKey, navigate])
 
     const handleCopy = (alias) => {
         navigator.clipboard.writeText(`${window.location.origin}/download/${alias}`)

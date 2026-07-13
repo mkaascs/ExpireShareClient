@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuth'
 import { uploadFile } from '../api/files'
 import styles from './Upload.module.css'
 import {
@@ -24,7 +24,7 @@ export default function Upload() {
 
     useEffect(() => {
         if (!isAuth) navigate('/login')
-    }, [isAuth])
+    }, [isAuth, navigate])
 
     useEffect(() => { document.title = 'Upload · ExpireShare' }, [])
 
