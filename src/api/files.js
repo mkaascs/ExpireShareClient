@@ -54,11 +54,13 @@ export async function downloadFile(alias, password = '') {
         return { ok: false, status: 500, message: 'Missing Content-Disposition header' }
     }
 
-    const blob     = await res.blob()
-    const match    = disposition.match(/filename[^;=\n]*=["']?([^"';\n]+)["']?/)
-    const filename = match?.[1]?.trim() ?? alias
+    const blob = await res.blob()
+    return { ok: true, blob, filename: parseFilename(disposition, alias) }
+}
 
-    return { ok: true, blob, filename }
+export function parseFilename(disposition, fallback) {
+    const match = disposition.match(/filename[^;=\n]*=["']?([^"';\n]+)["']?/)
+    return match?.[1]?.trim() ?? fallback
 }
 
 export function uploadFile({ file, ttl, maxDownloads, password, onProgress }) {
@@ -97,7 +99,7 @@ export function uploadFile({ file, ttl, maxDownloads, password, onProgress }) {
     })
 }
 
-async function parseErrorMessage(res) {
+export async function parseErrorMessage(res) {
     try {
         const json = await res.json()
         if (Array.isArray(json.errors) && json.errors.length > 0) {
