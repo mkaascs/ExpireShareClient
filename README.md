@@ -1,5 +1,10 @@
 # Expire Share — Client
 
+![CI](https://github.com/mkaascs/ExpireShareClient/actions/workflows/ci.yml/badge.svg)
+![Lint](https://github.com/mkaascs/ExpireShareClient/actions/workflows/lint.yml/badge.svg)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
+
 Web interface for [expire-share](https://github.com/mkaascs/ExpireShare). Allows users to download and upload files by alias, register, log in. Access and refresh tokens are stored in `localStorage`; protected requests automatically refresh the token pair on `401`.
 
 ---
